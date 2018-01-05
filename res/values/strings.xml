@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">灯泡遥控器</string>
+    <string name="scan_wifi">扫描附近WIFI</string>
+    <string name="check_wifi">检查WIFI状态</string>
+    <string name="open_wifi">打开WIFI</string>
+    <string name="close_wifi">关闭WIFI</string>
+    <string name="wifi_list">查看WIFI列表</string>
+    <string name="send_udp">发送数据</string>
+    <string name="receive_udp">接收数据</string>
+    <string name="ip_config">IP端口设置</string>
+	<string name="wifi_config">WIFI设置</string>
+</resources>

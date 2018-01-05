@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.jushi_blub.MainActivity" >
+
+    <item
+        android:id="@+id/wifi_config"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/wifi_config"/>
+    <item
+        android:id="@+id/ip_config"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/ip_config"/>
+
+</menu>

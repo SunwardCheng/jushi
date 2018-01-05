@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: libs/commons-codec-1.10.jar libs/californium-core-2.0.0-M3.jar libs/commons-logging-1.2.jar libs/guava-18.0.jar libs/httpclient-4.3.6.jar libs/junit-4.12.jar libs/slf4j-api-1.7.25-sources.jar libs/slf4j-api-1.7.25.jar 
+Main-Class: jushi-bulb-controll-1.0

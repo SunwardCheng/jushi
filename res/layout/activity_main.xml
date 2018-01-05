@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.wifi.main.MainActivity" >
+
+	<Button
+	    android:id="@+id/send_udp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="97dp"
+	    android:text="打开" />
+
+
+	<!-- <Button
+	    android:id="@+id/receive_udp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/send_udp"
+	    android:layout_below="@+id/send_udp"
+	    android:text="@string/receive_udp" /> -->
+
+ 	<!-- <Button
+ 	    android:id="@+id/coapServer"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_below="@+id/receive_udp"
+ 	    android:layout_centerHorizontal="true"
+ 	    android:text="CoAPServer" />
+
+ 	<Button
+ 	    android:id="@+id/coapClient"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_alignLeft="@+id/coapServer"
+ 	    android:layout_alignRight="@+id/coapServer"
+ 	    android:layout_below="@+id/coapServer"
+ 	    android:text="CoAPClient" /> -->
+
+ 	<TextView
+ 	    android:id="@+id/information"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_centerHorizontal="true"
+ 	    android:layout_centerVertical="true"
+ 	    android:layout_below="@+id/send_udp"
+ 	    android:text="information: \n" />
+
+ 	<EditText
+ 	    android:id="@+id/message"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_alignParentTop="true"
+ 	    android:layout_centerHorizontal="true"
+ 	    android:layout_marginTop="29dp"
+ 	    android:ems="10"
+ 	    android:hint="请输入灯泡编号" 
+ 	    >
+
+ 	    <requestFocus />
+ 	</EditText>
+
+ 	<!-- <EditText
+ 	    android:id="@+id/receive"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_alignLeft="@+id/message"
+ 	    android:layout_below="@+id/information"
+ 	    android:ems="10"
+ 	    android:hint="接收的信息" /> -->
+
+</RelativeLayout>
