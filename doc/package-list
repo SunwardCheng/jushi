@@ -1,0 +1,8 @@
+com.example.jushi_jar
+com.java.bulb
+com.java.bulb.impl
+com.java.bulb.impl.wifi
+com.wifi.udp
+javax.jmdns
+javax.jmdns.impl
+javax.jmdns.impl.tasks

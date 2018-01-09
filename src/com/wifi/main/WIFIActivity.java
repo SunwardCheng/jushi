@@ -37,11 +37,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bulb.wifi.ConfigWifi;
-import com.bulb.wifi.impl.ConfigWifiImpl;
 import com.example.jushi_blub.R;
-import com.wifi.connect.WIFIAdmin;
-import com.wifi.udp.UDPUtils;
+import com.java.bulb.ConfigWifi;
+import com.java.bulb.impl.wifi.WIFIAdmin;
 import com.wifi.utils.WifiUtils;
 
 
@@ -56,14 +54,18 @@ public class WIFIActivity extends Activity{
     private TextView wifi_info,wifi_SSID,wifi_password;
     private RadioButton radio1,radio2;
     private String SSID,Password;
-    private static UDPUtils udpUtils = new UDPUtils();
     private String SERVER_IP;
     private int SERVER_PORT;
-    
-    private static final Thread thread = new Thread(udpUtils);
+    private ConfigWifi configWifi ;
     
     //定时器
-    private Timer timer = new Timer();
+    private Timer timer ;
+    /**
+     * 接收的消息
+     */
+    private String message;
+    
+    private Thread thread;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +79,17 @@ public class WIFIActivity extends Activity{
         SERVER_IP = mWifiAdmin.getWifiIP();
         SERVER_PORT = 9090;
         
+        if (SERVER_IP!=""&&SERVER_IP!=null) {
+        	 //创建配置类
+            configWifi = ConfigWifi.initWifi(SERVER_IP, 9090);
+		}
+        
         IntentFilter filter = new IntentFilter(
         		WifiManager.NETWORK_STATE_CHANGED_ACTION);
         
         //监听wifi变化
         registerReceiver(mReceiver, filter);
+        
         mlistView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -114,8 +122,25 @@ public class WIFIActivity extends Activity{
                         editor.commit();          
                         getSSID();
                         
+                        if (SERVER_IP==null||SERVER_IP=="") {
+                        	Toast.makeText(WIFIActivity.this, "请连上设备！", Toast.LENGTH_SHORT).show();
+						}else {
+							//创建配置类
+							configWifi = ConfigWifi.initWifi(SERVER_IP, 9090);
+						}
+                        
+//                        new Thread(){  
+//     					   @Override  
+//     					   public void run()  
+//     					   {  
+//     						   configWifi.startListen(controlHandler);
+//     					  }  
+//     					}.start();
+                        
                     	//如果未收到成功回复每隔1秒发送一次SSID和密码
-                    	timer.schedule(new Mytask(), 0, 1000);
+                        timer = new Timer();
+                    	timer.schedule(new Mytask(), 0, 100);
+                    	
                     }  
                 });  
                 alert.setNegativeButton("取消", new DialogInterface.OnClickListener(){  
@@ -134,28 +159,36 @@ public class WIFIActivity extends Activity{
     }
     
     /**
+     * 获取监听消息的Handler
+     */
+    Handler controlHandler = new Handler(){
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			Bundle bundle = new Bundle();
+			bundle = msg.getData();
+			message = bundle.getString("config_receive"); 
+			
+		}
+    };
+    
+    /**
      * 时钟任务
      * @author 17993
      *
      */
     class Mytask extends TimerTask{
 
-    	public Mytask(){
-    		
-    	}
 		@Override
 		public void run() {
 			Message msg = new Message();
             Bundle bundle = new Bundle();
             
-            String receiveMessage = udpUtils.getMessage();
-            
             //把数据放到buddle中
-            bundle.putString("receive", receiveMessage);
+            bundle.putString("receive", "test");
             //把buddle传递到message
             msg.setData(bundle);
             myHandler.sendMessage(msg);
-            
+          
 		}
 		
 	}
@@ -168,41 +201,37 @@ public class WIFIActivity extends Activity{
 		public void handleMessage(Message msg)										
 		{											
 			super.handleMessage(msg);
-			Bundle bundle=new Bundle();
-			//从传过来的message数据中取出传过来的绑定数据的bundle对象
+			Bundle bundle = new Bundle();
 			bundle = msg.getData();
 			
-			String receive = udpUtils.getMessage();
 			
-			if (receive.equals("cfg successfull")){
+			if (message!=null&&message.equals("success")){
 				Toast.makeText(WIFIActivity.this, "配置成功！", Toast.LENGTH_SHORT).show(); 
 				//连接到配置的WIFI上
 				mWifiAdmin.addNetwork(mWifiAdmin.createWifiInfo(ssid, Password, 3));
-				
-				udpUtils.setMessage("test");
 				
 				//取消定时
 				timer.cancel();
 				Intent intent = new Intent();
 				intent.setClass(WIFIActivity.this, IPActivity.class);
 	        	startActivity(intent);
-	        	udpUtils.setKeepRunning(false); 
 	        	finish();
 	        	
 			}else {
 				i++;
-				if (i>=2) {
-					udpUtils.setMessage("cfg successfull");
-					Toast.makeText(WIFIActivity.this, "正在配置，请稍等...", Toast.LENGTH_SHORT).show();
-					Toast.makeText(WIFIActivity.this, SERVER_IP, Toast.LENGTH_SHORT).show();  
+				if (i>3) {
+					message="success";
+					i=0;
 				}
-				
-				//创建配置类
-				ConfigWifi configWifi = ConfigWifi.initWifi(SERVER_IP, 9090);
+				//Toast.makeText(WIFIActivity.this, "正在配置，请稍等...", Toast.LENGTH_SHORT).show();
 				//给站点配置wifi
-				configWifi.config(ssid, Password);
-					 //启动监听UDP消息线程
-                        
+				new Thread(){  
+					   @Override  
+					   public void run()  
+					   {  
+						   configWifi.config(ssid, Password);
+					  }  
+					}.start();
 			}
 		}		
 	};
@@ -282,7 +311,6 @@ public class WIFIActivity extends Activity{
         Intent intent = new Intent();
         intent.setClass(this, MainActivity.class);
         startActivity(intent);
-        udpUtils.setKeepRunning(false); 
         finish();
     } 
 
@@ -385,8 +413,7 @@ public class WIFIActivity extends Activity{
     @Override
     protected void onDestroy() {  
     	super.onDestroy();
-    	//销毁线程
-        udpUtils.setKeepRunning(false); 
+    	configWifi.stopListen();
     } 
 
 }

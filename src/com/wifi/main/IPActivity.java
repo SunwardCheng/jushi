@@ -1,15 +1,10 @@
 package com.wifi.main;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceEvent;
-import javax.jmdns.ServiceInfo;
-import javax.jmdns.ServiceListener;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -38,10 +33,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bulb.wifi.ConfigWifi;
-import com.bulb.wifi.impl.ConfigWifiImpl;
 import com.example.jushi_blub.R;
-import com.wifi.connect.WIFIAdmin;
+import com.java.bulb.ConfigWifi;
 import com.wifi.mdns.Utils;
 import com.wifi.utils.MyApplication;
 import com.wifi.utils.WifiUtils;
@@ -62,7 +55,6 @@ public class IPActivity extends Activity implements OnClickListener{
     private Map<String, Object> map;
     private MyApplication myApplication;
     
-    private WIFIAdmin wifiAdmin;
     private WifiManager mWifiManager;
     
     Handler handler = new Handler();
@@ -70,9 +62,6 @@ public class IPActivity extends Activity implements OnClickListener{
     //mdns服务类型
     private String type = "_udpserver._udp.local.";
 //    private String type = "_sleep-proxy._udp.local.";
-    private JmDNS jmdns = null;
-    private ServiceListener listener = null;
-    private ServiceInfo serviceInfo;
     
     //组播锁
     private MulticastLock lock;
@@ -273,7 +262,6 @@ public class IPActivity extends Activity implements OnClickListener{
 					map = new HashMap<String, Object>();
 					map.put("IP", Server_IP);
 					map.put("Port", Server_Port);
-					map.put("LOCAL_PORT", 8929);
 					
 					myApplication.setMap(map);
 					//定义一个意图  
@@ -295,8 +283,8 @@ public class IPActivity extends Activity implements OnClickListener{
 //		        			Looper.prepare();
 
 		        			//加载扫描到的服务
-		        			ConfigWifiImpl configWifi = ConfigWifiImpl.getInstance();
-		        			configWifi.scanJmDNS();
+		        			ConfigWifi configWifi = ConfigWifi.init();
+		        			configWifi.scanMDNS();
 		        			mdnsList = configWifi.getMdnsList();
 		        			flag = true;
 //		        			Looper.loop();

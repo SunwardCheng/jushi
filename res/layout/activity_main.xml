@@ -66,13 +66,13 @@
  	    <requestFocus />
  	</EditText>
 
- 	<!-- <EditText
+    <EditText
  	    android:id="@+id/receive"
  	    android:layout_width="wrap_content"
  	    android:layout_height="wrap_content"
  	    android:layout_alignLeft="@+id/message"
  	    android:layout_below="@+id/information"
  	    android:ems="10"
- 	    android:hint="接收的信息" /> -->
+ 	    android:hint="接收的信息" /> 
 
 </RelativeLayout>
