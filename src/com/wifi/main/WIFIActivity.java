@@ -81,9 +81,8 @@ public class WIFIActivity extends Activity{
         
         if (SERVER_IP!=""&&SERVER_IP!=null) {
         	 //创建配置类
-            configWifi = ConfigWifi.initWifi(SERVER_IP, 9090);
+            configWifi = ConfigWifi.initWifi(SERVER_IP);
 		}
-        
         IntentFilter filter = new IntentFilter(
         		WifiManager.NETWORK_STATE_CHANGED_ACTION);
         
@@ -126,7 +125,7 @@ public class WIFIActivity extends Activity{
                         	Toast.makeText(WIFIActivity.this, "请连上设备！", Toast.LENGTH_SHORT).show();
 						}else {
 							//创建配置类
-							configWifi = ConfigWifi.initWifi(SERVER_IP, 9090);
+							configWifi = ConfigWifi.initWifi(SERVER_IP);
 						}
                         
 //                        new Thread(){  
@@ -207,15 +206,17 @@ public class WIFIActivity extends Activity{
 			
 			if (message!=null&&message.equals("success")){
 				Toast.makeText(WIFIActivity.this, "配置成功！", Toast.LENGTH_SHORT).show(); 
+				
+				Toast.makeText(WIFIActivity.this, SERVER_IP, Toast.LENGTH_SHORT).show(); 
 				//连接到配置的WIFI上
 				mWifiAdmin.addNetwork(mWifiAdmin.createWifiInfo(ssid, Password, 3));
 				
 				//取消定时
 				timer.cancel();
-				Intent intent = new Intent();
-				intent.setClass(WIFIActivity.this, IPActivity.class);
-	        	startActivity(intent);
-	        	finish();
+//				Intent intent = new Intent();
+//				intent.setClass(WIFIActivity.this, IPActivity.class);
+//	        	startActivity(intent);
+//	        	finish();
 	        	
 			}else {
 				i++;
@@ -223,8 +224,10 @@ public class WIFIActivity extends Activity{
 					message="success";
 					i=0;
 				}
+				
 				//Toast.makeText(WIFIActivity.this, "正在配置，请稍等...", Toast.LENGTH_SHORT).show();
 				//给站点配置wifi
+				
 				new Thread(){  
 					   @Override  
 					   public void run()  

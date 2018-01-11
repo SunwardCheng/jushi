@@ -80,7 +80,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
         //udpUtils = new UDPUtils(SERVER_IP,SERVER_PORT);
       //创建配置类
-		bulbControl = BulbControl.init(SERVER_IP,SERVER_PORT);
+        bulbControl = BulbControl.init(SERVER_IP,SERVER_PORT);
+		
 		
 		
         infomation.append("目的IP： "+SERVER_IP+"\n"+"目的端口： "+SERVER_PORT+"\n");
@@ -314,10 +315,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			
 			
 			//如果没有收到对灯泡操作的确认消息
-//			if (message!=null&&message.equals("success")){
-			if (bulbControl.isControlSuccess(meeeagebyte)){
+			if (message!=null&&message.equals("success")){
+//			if (bulbControl.isControlSuccess(meeeagebyte)){
 				message = "test";
-				i=0;
 				//如果反馈回来的灯泡打开成功
 				if (send_udp.getText().equals("打开")) {
 					send_udp.setText("关闭");
@@ -331,6 +331,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				i++;
 				if (i>3) {
 					message="success";
+					i=0;
 				}
 				if (send_udp.getText().equals("打开")) {
 					//在子线程内进行网络操作，否则Android5.1不能发数据
